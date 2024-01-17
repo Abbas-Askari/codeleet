@@ -9,6 +9,7 @@ import {
   testCodeAsync,
   updateCode,
   updateFunctionName,
+  updateParam,
 } from "./new-problem-slice";
 import { Results } from "./result";
 
@@ -100,9 +101,7 @@ function NewProblem() {
                 className="input input-bordered w-full max-w-xs input-sm"
                 value={param}
                 onChange={(e) => {
-                  setParams(
-                    params.map((p, i) => (i === index ? e.target.value : p))
-                  );
+                  dispatch(updateParam({ index, param: e.target.value }));
                 }}
               />
             </div>

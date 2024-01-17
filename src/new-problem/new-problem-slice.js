@@ -78,7 +78,7 @@ export const newProblemSlice = createSlice({
     },
     addParam: (state) => {
       state.params.push("Parameter: " + state.params.length);
-      state.testCases.forEach((testCase) => testCase.push(""));
+      state.testCases.forEach((testCase) => testCase.push("null"));
     },
     setTestCase: (state, action) => {
       const { testCase, index } = action.payload;
