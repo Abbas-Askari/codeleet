@@ -36,9 +36,54 @@ export const testCodeAsync = createAsyncThunk(
   }
 );
 
+export const submitProblemAsync = createAsyncThunk(
+  "editor/testCodeAsync",
+  async (_, { dispatch, getState }) => {
+    try {
+      const state = getState().newProblem;
+      const problem = {
+        title: state.title,
+        description: state.description,
+        functionName: state.functionName,
+        solutionFunction: state.code,
+        inputs: JSON.stringify(state.testCases),
+        template: `function ${state.functionName}(${state.params.join(", ")}) {
+          // Your code here 
+        }`,
+      };
+      console.log({ problem });
+      const result = await fetch("http://localhost:3000/problems", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(problem),
+      });
+
+      const data = await result.json();
+      if (result.status !== 200) {
+        dispatch(updateError(data.message + " \n " + data.stack));
+      } else {
+        dispatch(updateError(""));
+      }
+      dispatch(updateLogs(data.logs));
+      dispatch(updateTime(data.time));
+      dispatch(updateResults(data.results));
+      console.log(data);
+      dispatch(updateError(error.message));
+      console.error(error);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+);
+
 export const newProblemSlice = createSlice({
   name: "newProblem",
   initialState: {
+    title: "Greater of Three Numbers",
+    description:
+      "Write a function that takes three numbers as input and returns the greatest of the three numbers",
     error: "",
     time: 0,
     logs: [],
@@ -56,6 +101,12 @@ export const newProblemSlice = createSlice({
     functionName: "greatestOfThreeNumbers",
   },
   reducers: {
+    updateTitle: (state, action) => {
+      state.title = action.payload;
+    },
+    updateDescription: (state, action) => {
+      state.description = action.payload;
+    },
     updateLogs: (state, action) => {
       state.logs = action.payload;
       console.log({ load: action.payload });
@@ -105,6 +156,8 @@ export const newProblemSlice = createSlice({
 });
 
 export const {
+  updateTitle,
+  updateDescription,
   updateFunctionName,
   updateCode,
   updateError,

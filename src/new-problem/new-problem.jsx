@@ -6,18 +6,24 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addParam,
   deleteParam,
+  submitProblemAsync,
   testCodeAsync,
   updateCode,
+  updateDescription,
   updateFunctionName,
   updateParam,
+  updateTitle,
 } from "./new-problem-slice";
 import { Results } from "./result";
 
 function NewProblem() {
   const {
+    functionName,
     testCases: cases,
     params,
     code,
+    title,
+    description,
   } = useSelector((state) => state.newProblem);
   const dispatch = useDispatch();
 
@@ -33,9 +39,10 @@ function NewProblem() {
         </div>
         <input
           type="text"
+          value={title}
           placeholder="Type here"
-          defaultValue="Greatest of three numbers"
           className="input input-bordered w-full max-w-xs"
+          onChange={(e) => dispatch(updateTitle(e.target.value))}
         />
       </label>
 
@@ -44,9 +51,10 @@ function NewProblem() {
           <span className="label-text font-semibold text-lg">Description</span>
         </div>
         <textarea
+          value={description}
           className="textarea textarea-bordered h-24 resize-none"
           placeholder="Bio"
-          defaultValue={`Write a function that takes three numbers as input and returns the greatest of the three numbers`}
+          onChange={(e) => dispatch(updateDescription(e.target.value))}
         ></textarea>
       </label>
 
@@ -60,9 +68,9 @@ function NewProblem() {
           type="text"
           name="functionName"
           placeholder="Type here"
+          value={functionName}
           onChange={(e) => dispatch(updateFunctionName(e.target.value.trim()))}
           className="input input-bordered w-full max-w-xs"
-          defaultValue={"greatestOfThreeNumbers"}
         />
       </label>
 
@@ -143,7 +151,13 @@ function NewProblem() {
         >
           Test All Cases
         </button>
-        <button className=" btn btn-primary">Submit</button>
+        <button
+          className=" btn btn-primary"
+          type="button"
+          onClick={() => dispatch(submitProblemAsync())}
+        >
+          Submit
+        </button>
       </div>
     </form>
   );
