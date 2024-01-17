@@ -6,7 +6,8 @@ const schema = new mongoose.Schema({
     inputs: { type: String, required: true },
     solutionFunction: { type: String, required: true },
     template: { type: String, required: true },
-    createdAt: { type: Date, default: Date.now }
+    functionName: { type: String, required: true },
+    createdAt: { type: Date, default: Date.now },
 });
 
 const Problem = mongoose.model("Problem", schema);
