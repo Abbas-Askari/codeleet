@@ -41,15 +41,20 @@ export async function getProblem(req, res) {
 }
 
 export async function testNewProblem(req, res) {
-  const { testCases, functionName, code: solutionCode } = req.body;
-  console.log({ body: req.body });
-
   try {
+    let { testCases, functionName, code: solutionCode } = req.body;
+    console.log({ body: req.body, case1: testCases[0] });
+
+    testCases = testCases.map((testCase) =>
+      testCase.map((arg) => JSON.parse(arg))
+    );
     const { logs, results, time } = await testProblem(
       solutionCode,
       functionName,
       testCases
     );
+
+    console.log({ results });
 
     res.status(200).json({ logs, results, time });
   } catch (error) {
@@ -70,14 +75,15 @@ function testProblem(solutionCode, functionName, testCases) {
             for (let i = 0; i < testCases.length; i++) {
                 const args = testCases[i];
                 const result = ${functionName}(...args);
-                addResult(i, result);
+                addResult(result);
             }
         `,
         {
           addResult: (result) => {
             results.push(result);
           },
-          log: (...str) => logs.push(str.join(" ")),
+          log: (...str) =>
+            logs.push(str.map((obj) => JSON.stringify(obj)).join(" ")),
           testCases,
         }
       );

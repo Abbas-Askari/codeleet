@@ -1,10 +1,13 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Nav() {
   return (
     <div className="navbar bg-base-100">
       <div className="flex-1">
-        <a className="btn btn-ghost text-xl">CodeLeet</a>
+        <Link to={"/"} className="btn btn-ghost text-xl">
+          CodeLeet
+        </Link>
       </div>
       <div className="flex-none gap-2">
         <div className="form-control">

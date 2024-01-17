@@ -1,6 +1,6 @@
 import React from "react";
 
-function ProblemInfo({ className }) {
+function ProblemInfo({ className, problem }) {
   return (
     <>
       <div role="tablist" className={`tabs tabs-lifted ${className}`}>
@@ -15,7 +15,7 @@ function ProblemInfo({ className }) {
           role="tabpanel"
           className="tab-content bg-base-100 border-base-300 rounded-box p-6"
         >
-          Problem statment goes here!
+          {problem.description}
         </div>
         <input
           type="radio"

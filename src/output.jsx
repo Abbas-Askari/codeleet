@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { submitCodeAsync } from "./editorSlice";
 import Result from "./result";
 
-function Output({ className }) {
+function Output({ className, problem }) {
   const { code } = useSelector((state) => state.editor);
   const [tab, setTab] = useState(2);
   const tabs = ["Test Cases", "Output", "Result"];
@@ -12,7 +12,7 @@ function Output({ className }) {
   function submitCode() {
     if (code === "") return;
     // console.log("Submit Code", code);
-    dispatch(submitCodeAsync(code));
+    dispatch(submitCodeAsync({ code, id: problem._id }));
     setTab(2);
   }
 

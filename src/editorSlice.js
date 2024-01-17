@@ -1,13 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-export const submitCodeAsync = createAsyncThunk('editor/submitCodeAsync', async (code, {dispatch, getState}) => {
+export const submitCodeAsync = createAsyncThunk('editor/submitCodeAsync', async (payload, {dispatch, getState}) => {
+    console.log({payload})
+    
     try {
-        const response = await fetch('http://localhost:3000/submissions', {
+        const response = await fetch(`http://localhost:3000/submissions/${payload.id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ code }),
+            body: JSON.stringify({ code: payload.code }),
         });
         const data = await response.json();
         if (response.status !== 200) {
