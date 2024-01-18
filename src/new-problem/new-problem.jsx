@@ -15,6 +15,7 @@ import {
   updateTitle,
 } from "./new-problem-slice";
 import { Results } from "./result";
+import { useProtected } from "../auth/auth-hook";
 
 function NewProblem() {
   const {

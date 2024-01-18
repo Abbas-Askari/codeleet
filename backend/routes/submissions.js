@@ -55,7 +55,8 @@ function runCode(code, problem) {
               testCase: index + 1,
             };
           },
-          log: (...str) => logs.push(str.join(" ")),
+          log: (...str) =>
+            logs.push(str.map((obj) => JSON.stringify(obj)).join(" ")),
           testCases,
           isEqual,
         }
