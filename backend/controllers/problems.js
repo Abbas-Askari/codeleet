@@ -10,15 +10,17 @@ export async function createProblem(req, res) {
     solutionFunction: req.body.solutionFunction,
     template: req.body.template,
     functionName: req.body.functionName,
+    params: req.body.params,
   };
   console.log({ problem });
   try {
     const newProblem = new Problem(problem);
 
     await newProblem.save();
-    res.status(201).json(newProblem);
+    res.status(200).json(newProblem);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    console.log(error);
+    res.status(400).json({ message: error.message, stack: error.stack });
   }
 }
 
@@ -94,4 +96,13 @@ function testProblem(solutionCode, functionName, testCases) {
       reject(error);
     }
   });
+}
+
+export async function deleteProblem(req, res) {
+  try {
+    const problem = await Problem.findByIdAndDelete(req.params.id);
+    res.status(200).json(problem);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
 }

@@ -6,7 +6,11 @@ export async function createUser(req, res, next) {
     const { username, password } = req.body;
     const user = new User({ username, password });
     await user.save();
-    res.status(201).json(user);
+
+    jwt.sign(user.toJSON(), process.env.JWT_SECRET, (err, token) => {
+      if (err) return res.status(500).json({ message: err.message });
+      res.status(200).json({ user: user.toJSON(), token });
+    });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -32,6 +36,6 @@ export async function login(req, res) {
 
   jwt.sign(user.toJSON(), process.env.JWT_SECRET, (err, token) => {
     if (err) return res.status(500).json({ message: err.message });
-    res.status(200).json({ token });
+    res.status(200).json({ user: user.toJSON(), token });
   });
 }

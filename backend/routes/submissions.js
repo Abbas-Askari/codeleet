@@ -20,9 +20,11 @@ router.post("/", async (req, res) => {
 });
 
 function runCode(code, problem) {
+  console.log({ inputs: problem.inputs });
   const testCases = JSON.parse(problem.inputs);
   console.log({ testCases, problem });
-
+  console.log({ case1: testCases[0] });
+  console.log(...testCases[0]);
   return new Promise((resolve, reject) => {
     const logs = [];
     let failed = {};
@@ -38,6 +40,7 @@ function runCode(code, problem) {
 
                 for (let i = 0; i < testCases.length; i++) {
                     const args = testCases[i];
+                    clearLogs();
                     const correct = ${problem.functionName}_(...args);
                     const user = ${problem.functionName}(...args);
                     if (!isEqual(correct, user)) {
@@ -55,8 +58,12 @@ function runCode(code, problem) {
               testCase: index + 1,
             };
           },
-          log: (...str) =>
-            logs.push(str.map((obj) => JSON.stringify(obj)).join(" ")),
+          log: (...str) => {
+            logs.push(str.map((obj) => JSON.stringify(obj)).join(" "));
+          },
+          clearLogs: () => {
+            logs.length = 0;
+          },
           testCases,
           isEqual,
         }
