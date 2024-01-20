@@ -4,9 +4,7 @@ export const testCodeAsync = createAsyncThunk(
   "editor/testCodeAsync",
   async (_, { dispatch, getState }) => {
     try {
-      console.log("Fetching");
       const { functionName, code, testCases } = getState().newProblem;
-      console.log({ functionName, code, testCases });
       try {
         const result = await fetch("http://localhost:3000/problems/test", {
           method: "POST",
@@ -25,7 +23,6 @@ export const testCodeAsync = createAsyncThunk(
         dispatch(updateLogs(data.logs));
         dispatch(updateTime(data.time));
         dispatch(updateResults(data.results));
-        console.log(data);
       } catch (error) {
         dispatch(updateError(error.message));
         console.log(error);
@@ -41,17 +38,24 @@ export const submitProblemAsync = createAsyncThunk(
   async (_, { dispatch, getState }) => {
     try {
       const state = getState().newProblem;
+      const contributor = getState().auth.user._id;
+      console.log({ contributor });
       const problem = {
         title: state.title,
         description: state.description,
         functionName: state.functionName,
         solutionFunction: state.code,
-        inputs: JSON.stringify(state.testCases),
+        inputs: JSON.stringify(
+          state.testCases.map((testCase) =>
+            testCase.map((arg) => JSON.parse(arg))
+          )
+        ),
         template: `function ${state.functionName}(${state.params.join(", ")}) {
           // Your code here 
         }`,
+        contributor: contributor,
+        params: state.params,
       };
-      console.log({ problem });
       const result = await fetch("http://localhost:3000/problems", {
         method: "POST",
         headers: {
@@ -66,13 +70,8 @@ export const submitProblemAsync = createAsyncThunk(
       } else {
         dispatch(updateError(""));
       }
-      dispatch(updateLogs(data.logs));
-      dispatch(updateTime(data.time));
-      dispatch(updateResults(data.results));
-      console.log(data);
-      dispatch(updateError(error.message));
-      console.error(error);
     } catch (error) {
+      dispatch(updateError(error.message));
       console.error(error);
     }
   }
@@ -112,7 +111,12 @@ export const newProblemSlice = createSlice({
       console.log({ load: action.payload });
     },
     updateError: (state, action) => {
-      console.log("updating error");
+      if (action.payload !== "") {
+        console.log(
+          "updating error to: ",
+          JSON.parse(JSON.stringify(action.payload))
+        );
+      }
       state.error = action.payload;
     },
     updateCode: (state, action) => {
@@ -146,7 +150,6 @@ export const newProblemSlice = createSlice({
     },
     deleteTestCase: (state, action) => {
       const index = action.payload;
-      console.log("deleting", index);
       state.testCases.splice(index, 1);
     },
     addTestCase: (state) => {

@@ -8,15 +8,15 @@ function Editor({ className, problem }) {
   const { code } = useSelector((state) => state.editor);
   const dispatch = useDispatch();
 
-  console.log({ template: problem.template });
-
   return (
     <CodeMirror
       className={`${className} text-lg`}
       defaultValue={problem.template}
       value={code}
       theme={vscodeDark}
-      onChange={(code) => dispatch(updateCode(code))}
+      onChange={(code) =>
+        dispatch(updateCode({ code, problemId: problem._id }))
+      }
       height="100%"
       extensions={[javascript()]}
     />

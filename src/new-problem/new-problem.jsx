@@ -15,7 +15,6 @@ import {
   updateTitle,
 } from "./new-problem-slice";
 import { Results } from "./result";
-import { useProtected } from "../auth/auth-hook";
 
 function NewProblem() {
   const {
@@ -76,7 +75,7 @@ function NewProblem() {
       </label>
 
       <label className="form-control w-full max-w-xs">
-        <div className="label">
+        <div className="label pr-0">
           <span className="label-text font-semibold text-lg">
             Function Parameters
           </span>
@@ -124,7 +123,7 @@ function NewProblem() {
           <div className="label">
             <span className="label-text font-semibold text-lg">Solution</span>
           </div>
-          <div className="min-h-96 text-lg bg-red-100">
+          <div className="min-h-96 text-lg  rounded-lg overflow-hidden">
             <ReactCodeMirror
               value={code}
               onChange={(value) => dispatch(updateCode(value))}
@@ -146,7 +145,6 @@ function NewProblem() {
           className=" btn btn-secondary"
           type="button"
           onClick={() => {
-            console.log("will dispatch testCodeAsync");
             dispatch(testCodeAsync());
           }}
         >

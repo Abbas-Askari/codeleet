@@ -1,5 +1,5 @@
 import express from "express";
-import { createUser, login } from "../controllers/users.js";
+import { createUser, login } from "../controllers/users-controller.js";
 import jwt from "jsonwebtoken";
 import User from "../models/user.js";
 

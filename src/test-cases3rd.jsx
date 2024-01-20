@@ -9,23 +9,16 @@ export function TestCases({}) {
 
   return (
     <div className="">
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text font-semibold text-lg">Test Cases</span>
-        </div>
-      </label>
+      <div className="label">
+        <span className="label-text font-semibold text-lg">Test Cases</span>
+      </div>
       <div className="flex  items-center gap-1">
-        <div
-          role="tablist"
-          className="tabs tabs-boxed flex-1 flex overflow-auto"
-        >
+        <div role="tablist" className="tabs tabs-boxed flex-1">
           {testCases.map((c, i) => (
             <a
               key={i}
               role="tab"
-              className={`tab flex-[1_0_fit-content] ${
-                tab === i ? "tab-active " : ""
-              }`}
+              className={`tab ${tab === i ? "tab-active" : ""}`}
               onClick={() => setTab(i)}
             >
               Test Case {i + 1}
@@ -43,7 +36,7 @@ export function TestCases({}) {
           ))}
         </div>
         <span
-          className=" h-full btn btn-xs btn-primary btn-square "
+          className=" h-full btn btn-xs btn-primary btn-circle "
           onClick={() => dispatch(addTestCase())}
         >
           +

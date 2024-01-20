@@ -6,7 +6,7 @@ import {
   getAllProblems,
   getProblem,
   testNewProblem,
-} from "../controllers/problems.js";
+} from "../controllers/problems-controller.js";
 
 const router = express.Router();
 // POST to save a new question

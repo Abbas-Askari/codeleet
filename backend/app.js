@@ -1,7 +1,7 @@
 import express from "express";
-import submissionsRouter from "./routes/submissions.js";
-import problemsRouter from "./routes/problems.js";
-import usersRouter from "./routes/users.js";
+import submissionsRouter from "./routes/submissions-route.js";
+import problemsRouter from "./routes/problems-route.js";
+import usersRouter from "./routes/users-route.js";
 import cors from "cors";
 import "dotenv/config.js";
 import mongoose, { mongo } from "mongoose";

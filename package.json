@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@codemirror/lang-javascript": "^6.2.1",
+    "@heroicons/react": "^2.1.1",
     "@reduxjs/toolkit": "^2.0.1",
     "@uiw/codemirror-theme-vscode": "^4.21.21",
     "@uiw/react-codemirror": "^4.21.21",

@@ -1,5 +1,5 @@
 import AppLayout from "./app-layout";
-import Problem, { problemLoader } from "./problem";
+import Problem, { problemLoader } from "./problem/problem";
 import Home, { HomeLoader } from "./home/home";
 import { createBrowserRouter } from "react-router-dom";
 import NewProblem from "./new-problem/new-problem";
@@ -7,6 +7,7 @@ import Login from "./auth/login";
 import AuthRequired from "./auth/auth-required";
 import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import Signup from "./auth/signup";
 
 const Protected = ({ children }) => {
   const { user } = useSelector((state) => state.auth);
@@ -40,7 +41,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/signup",
-        element: <div>Signup</div>,
+        element: <Signup />,
       },
       {
         path: "/auth-required",

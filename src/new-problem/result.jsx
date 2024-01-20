@@ -48,15 +48,24 @@ export function Results({}) {
             <div className=" text-lg font-semibold">Arguments:</div>
             {params.map((param, i) => (
               <>
-                <div className="">{param}</div>
-                <div className="bg-base-300 p-2 px-4 rounded-lg mb-2">
-                  {JSON.stringify(JSON.parse(testCases[tab][i]))}
+                <div key={i} className="">
+                  {param}
+                </div>
+                <div
+                  key={i + 0.5}
+                  className="bg-base-300 p-2 px-4 rounded-lg mb-2"
+                >
+                  {testCases[tab][i] || "null"}
                 </div>
               </>
             ))}
             <div className="text-lg font-semibold">Recived Output:</div>
             <div className="bg-base-300 p-2 px-4 rounded-lg mb-2">
-              {JSON.stringify(results[tab])}
+              {JSON.stringify(results[tab]) || (
+                <span className=" text-info text-sm italic">
+                  Submit to see results
+                </span>
+              )}
             </div>
           </>
         )}
@@ -71,6 +80,13 @@ export function Results({}) {
           <>
             <div className="font-semibold text-lg">Logs: </div>
             <div className=" bg-base-300 p-2 px-4 rounded-lg">
+              {logs.length >= MAX_LOGS && (
+                <div className=" bg-warning text-warning-content">
+                  <code className="">
+                    Warning: number of logs exceeded limit ({MAX_LOGS})
+                  </code>
+                </div>
+              )}
               {logs.map((log, index) => (
                 <div key={index} className="">
                   {JSON.stringify(log)}
