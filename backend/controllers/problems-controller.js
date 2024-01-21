@@ -14,12 +14,10 @@ export async function createProblem(req, res) {
     params: req.body.params,
     contributor: req.body.contributor,
   };
-  console.log({ problem });
   try {
     const newProblem = new Problem(problem);
 
     await newProblem.save();
-    console.log({ newProblem, problem });
     res.status(200).json(newProblem);
   } catch (error) {
     console.log(error);
@@ -60,7 +58,6 @@ export async function getAllProblems(req, res) {
         problem.difficulty = "Hard";
       }
     });
-    console.log({ problems });
 
     res.status(200).json(problems);
   } catch (error) {
@@ -83,55 +80,59 @@ export async function getProblem(req, res) {
 export async function testNewProblem(req, res) {
   try {
     let { testCases, functionName, code: solutionCode } = req.body;
-    console.log({ body: req.body, case1: testCases[0] });
 
-    testCases = testCases.map((testCase) =>
-      testCase.map((arg) => JSON.parse(arg))
-    );
-    const { logs, results, time } = await testProblem(
-      solutionCode,
-      functionName,
-      testCases
+    const promises = testCases.map((testCase) =>
+      testCaseSeperately(solutionCode, functionName, testCase)
     );
 
-    console.log({ results });
+    const returns = await Promise.all(promises);
+    const logs = returns.map((returned) => returned.logs);
+    const times = returns.map((returned) => returned.time);
+    const errors = returns.map((returned) => returned.error);
+    const results = returns.map((returned) => returned.result);
 
-    res.status(200).json({ logs, results, time });
+    console.log({ logs, results, times, errors });
+
+    res.status(200).json({ logs, results, times, errors });
   } catch (error) {
     res.status(400).json({ message: error.message, stack: error.stack });
   }
 }
 
-function testProblem(solutionCode, functionName, testCases) {
+function testCaseSeperately(solutionCode, functionName, testCase) {
   return new Promise((resolve, reject) => {
     const logs = [];
-    const results = [];
-    console.log(solutionCode);
+    let result = null;
+    const start = Date.now();
     try {
-      const start = Date.now();
       vm.runInNewContext(
         `
             ${solutionCode}
-            for (let i = 0; i < testCases.length; i++) {
-                const args = testCases[i];
-                const result = ${functionName}(...args);
-                addResult(result);
-            }
+            setResult(${functionName}(...args));
         `,
         {
-          addResult: (result) => {
-            results.push(result);
+          setResult: (r) => (result = r),
+          log: (...str) => {
+            if (logs.length >= +process.env.MAX_LOGS) return;
+            logs.push(str.map((obj) => JSON.stringify(obj)).join(" "));
           },
-          log: (...str) =>
-            logs.push(str.map((obj) => JSON.stringify(obj)).join(" ")),
-          testCases,
-        }
+          args: testCase,
+        },
+        { timeout: +process.env.EXECUTION_TIMEOUT }
       );
       console.log({ logs });
-      resolve({ logs, results, time: Date.now() - start });
+      resolve({ logs, result, time: Date.now() - start });
     } catch (error) {
-      console.log({ error });
-      reject(error);
+      if (error.code === "ERR_SCRIPT_EXECUTION_TIMEOUT") {
+        resolve({
+          logs,
+          time: 1001,
+          limitExceeded: true,
+        });
+      } else {
+        console.log({ error });
+        resolve({ error: error.message + " \n " + error.stack, logs });
+      }
     }
   });
 }
