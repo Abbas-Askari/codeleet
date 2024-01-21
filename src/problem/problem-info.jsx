@@ -17,7 +17,7 @@ function ProblemInfo({ className, problem }) {
   const tabContents = [
     <Description {...{ problem }} />,
     <Attempts {...{ problem }} />,
-    "Disscussion about the problem goes here!",
+    <Discussion />,
   ];
 
   return (
@@ -61,7 +61,11 @@ function ProblemInfo({ className, problem }) {
 }
 
 function Discussion() {
-  return <div></div>;
+  return (
+    <div className="p-6 flex flex-col gap-4 overflow-hidden h-full">
+      <span className=" text-warning">Not Yet Implementd!</span>
+    </div>
+  );
 }
 
 function Description({ problem }) {

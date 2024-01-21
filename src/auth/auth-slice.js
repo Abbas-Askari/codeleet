@@ -49,6 +49,7 @@ export const signupAsync = createAsyncThunk(
         dispatch(login(data));
       }
     } catch (error) {
+      console.log(error);
       dispatch(updateError(error.message));
       console.log(error.message);
     } finally {

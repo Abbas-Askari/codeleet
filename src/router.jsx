@@ -8,6 +8,8 @@ import AuthRequired from "./auth/auth-required";
 import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Signup from "./auth/signup";
+import Page1 from "./new-problem/page1";
+import Page2 from "./new-problem/page2";
 
 const Protected = ({ children }) => {
   const { user } = useSelector((state) => state.auth);

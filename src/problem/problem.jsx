@@ -3,7 +3,7 @@ import ProblemInfo from "./problem-info";
 import Editor from "../editor";
 import Output from "./output";
 import { useLoaderData, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deleteProblemAsync, updateCode, updateProblem } from "../editorSlice";
 import { resetLocalEditorSlice } from "./localEditorSlice";
 function Problem() {
@@ -13,6 +13,8 @@ function Problem() {
   const leftRef = useRef(null);
   const rightRef = useRef(null);
   const [flexHorizontal, setFlexHorizontal] = useState(1);
+  const { user } = useSelector((state) => state.auth);
+  const isProblemOwner = user?._id === problem?.contributor?._id;
 
   const [flexVertical, setFlexVertical] = useState(3);
   const f = 10 - flexHorizontal;
@@ -79,12 +81,14 @@ function Problem() {
           </h3>
         </div>
         <ProblemInfo {...{ problem }} className=" flex-1  " />
-        <div className="buttons flex gap-2">
-          <button onClick={deleteProblem} className="btn flex-1 ">
-            Delete
-          </button>
-          <button className="btn flex-1 ">Edit</button>
-        </div>
+        {isProblemOwner && (
+          <div className="buttons flex gap-2">
+            <button onClick={deleteProblem} className="btn flex-1 ">
+              Delete
+            </button>
+            <button className="btn flex-1 ">Edit</button>
+          </div>
+        )}
       </div>
       <div
         ref={rightRef}

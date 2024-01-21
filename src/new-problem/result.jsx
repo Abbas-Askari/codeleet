@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { MAX_LOGS } from "../../constants";
 
 export function Results({}) {
   const { error, logs, results, time, params, testCases } = useSelector(

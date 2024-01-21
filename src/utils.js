@@ -9,6 +9,19 @@ export function outputLocal(problem, testCase) {
   return result;
 }
 
+export function isValidIdentifier(str) {
+  return /^[a-zA-Z_$][a-zA-Z_$0-9]*$/.test(str);
+}
+
+export function isValidTestCaseArg(arg) {
+  try {
+    JSON.parse(arg);
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
 // export function runLocal(code, problem, testCase) {
 //   const logs = [];
 //   const failed = null;
