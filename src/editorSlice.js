@@ -18,7 +18,11 @@ export const submitCodeAsync = createAsyncThunk(
       });
       const data = await response.json();
       if (response.status !== 200) {
-        dispatch(updateError(data.message + " \n " + data.stack));
+        if (data.message === "Forbidden") {
+          dispatch(updateError("Please login to submit code"));
+        } else {
+          dispatch(updateError(data.message + " \n " + data.stack));
+        }
       } else {
         dispatch(updateError(""));
       }

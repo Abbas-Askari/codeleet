@@ -152,6 +152,7 @@ function Attempts({ problem }) {
     })
       .then((res) => res.json())
       .then((data) => {
+        if (data.message) throw new Error(data.message);
         console.log({ data });
         setStatus("success");
 
@@ -165,6 +166,12 @@ function Attempts({ problem }) {
 
   console.log({ submissions, status, error });
 
+  if (error === "Forbidden")
+    return (
+      <div className=" p-4 text-error">
+        You need to login to view your submissions.
+      </div>
+    );
   if (status === "error") return <div className=" text-error">{error}</div>;
 
   if (status === "loading" || loading)
