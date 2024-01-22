@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { outputLocal } from "../utils";
+import { BACKEND_URL } from "../../constants";
 
 function ProblemInfo({ className, problem }) {
   const [tab, setTab] = useState(0);
@@ -142,7 +143,7 @@ function Attempts({ problem }) {
 
   useEffect(() => {
     if (loading) return;
-    fetch(`http://localhost:3000/submissions/${problem._id}`, {
+    fetch(BACKEND_URL + `submissions/${problem._id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

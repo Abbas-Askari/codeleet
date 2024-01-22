@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { isValidIdentifier, isValidTestCaseArg } from "../utils";
+import { BACKEND_URL } from "../../constants";
 
 export function validateTemplate(template, params, functionName) {
   if (typeof template !== "string") return "Template must be a string";
@@ -82,7 +83,7 @@ export const testCodeAsync = createAsyncThunk(
         return;
       }
       try {
-        const result = await fetch("http://localhost:3000/problems/test", {
+        const result = await fetch(BACKEND_URL + "problems/test", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -143,7 +144,7 @@ export const submitProblemAsync = createAsyncThunk(
         contributor: contributor,
         params: state.params,
       };
-      const result = await fetch("http://localhost:3000/problems", {
+      const result = await fetch(BACKEND_URL + "problems", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

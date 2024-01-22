@@ -1,6 +1,7 @@
 import React from "react";
 import { useLoaderData } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { BACKEND_URL } from "../../constants";
 
 function Home() {
   const problems = useLoaderData();
@@ -65,7 +66,7 @@ function Home() {
 }
 
 export async function HomeLoader() {
-  const res = await fetch("http://localhost:3000/problems");
+  const res = await fetch(BACKEND_URL + "problems");
   const problems = await res.json();
   console.log({ problems });
   return problems;

@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { BACKEND_URL } from "../../constants";
 
 export const loginAsync = createAsyncThunk(
   "auth/loginAsync",
@@ -6,7 +7,7 @@ export const loginAsync = createAsyncThunk(
     try {
       console.log({ user });
       dispatch(updateIsLoading(true));
-      const result = await fetch("http://localhost:3000/users/login", {
+      const result = await fetch(BACKEND_URL + "users/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -34,7 +35,7 @@ export const signupAsync = createAsyncThunk(
   async (user, { dispatch }) => {
     try {
       dispatch(updateIsLoading(true));
-      const result = await fetch("http://localhost:3000/users", {
+      const result = await fetch(BACKEND_URL + "users", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { BACKEND_URL } from "../../constants";
 
 export const testLocalCasesAsync = createAsyncThunk(
   "localEditor/testLocalCases",
@@ -8,16 +9,13 @@ export const testLocalCasesAsync = createAsyncThunk(
       const { code, problem } = payload;
       const testCases = JSON.parse(problem.inputs);
 
-      const res = await fetch(
-        "http://localhost:3000/submissions/testProvidedCases",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ code, problem, testCases }),
-        }
-      );
+      const res = await fetch(BACKEND_URL + "submissions/testProvidedCases", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ code, problem, testCases }),
+      });
       const { logs, times, results, errors, expecteds } = await res.json();
 
       dispatch(updateLogs(logs));

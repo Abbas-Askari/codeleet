@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { BACKEND_URL } from "../constants";
 
 export const submitCodeAsync = createAsyncThunk(
   "editor/submitCodeAsync",
@@ -6,18 +7,15 @@ export const submitCodeAsync = createAsyncThunk(
     console.log({ payload });
     dispatch(setLoading(true));
     try {
-      const response = await fetch(
-        `http://localhost:3000/submissions/${payload.id}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            token: localStorage.getItem("token"),
-          },
+      const response = await fetch(`${BACKEND_URL}submissions/${payload.id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          token: localStorage.getItem("token"),
+        },
 
-          body: JSON.stringify({ code: payload.code }),
-        }
-      );
+        body: JSON.stringify({ code: payload.code }),
+      });
       const data = await response.json();
       if (response.status !== 200) {
         dispatch(updateError(data.message + " \n " + data.stack));
@@ -44,15 +42,12 @@ export const deleteProblemAsync = createAsyncThunk(
   "editor/deleteProblem",
   async (payload, { dispatch, getState }) => {
     try {
-      const response = await fetch(
-        `http://localhost:3000/problems/${payload.id}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch(BACKEND_URL + `${payload.id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       const data = await response.json();
       if (response.status !== 200) {
         dispatch(updateError(data.message + " \n " + data.stack));

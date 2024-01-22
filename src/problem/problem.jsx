@@ -6,6 +6,7 @@ import { useLoaderData, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteProblemAsync, updateCode, updateProblem } from "../editorSlice";
 import { resetLocalEditorSlice } from "./localEditorSlice";
+import { BACKEND_URL } from "../../constants";
 function Problem() {
   const problem = useLoaderData();
   const dispatch = useDispatch();
@@ -106,7 +107,7 @@ function Problem() {
 
 export async function problemLoader({ params }) {
   const { id } = params;
-  const res = await fetch(`http://localhost:3000/problems/${id}`);
+  const res = await fetch(BACKEND_URL + `problems/${id}`);
   const problem = await res.json();
   console.log({ problem });
   return problem;
