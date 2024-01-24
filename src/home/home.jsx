@@ -65,11 +65,13 @@ function Home() {
   );
 }
 
-export async function HomeLoader() {
+export async function HomeLoader({ request: { url } }) {
+  const q = new URL(url).searchParams.get("q")?.trim() || "";
   const res = await fetch(BACKEND_URL + "problems");
   const problems = await res.json();
-  console.log({ problems });
-  return problems;
+  return problems.filter((problem) =>
+    problem.title.toLowerCase().includes(q.toLowerCase())
+  );
 }
 
 export default Home;
