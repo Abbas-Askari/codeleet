@@ -7,7 +7,10 @@ export const testLocalCasesAsync = createAsyncThunk(
     dispatch(updateLoading(true));
     try {
       const { code, problem } = payload;
-      const testCases = JSON.parse(problem.inputs);
+      const testCasesRaw = getState().localEditor.testCases;
+      const testCases = testCasesRaw.map((testCase) =>
+        testCase.map((arg) => JSON.parse(arg))
+      );
 
       const res = await fetch(BACKEND_URL + "submissions/testProvidedCases", {
         method: "POST",
@@ -21,7 +24,7 @@ export const testLocalCasesAsync = createAsyncThunk(
       dispatch(updateLogs(logs));
       dispatch(updateExpecteds(expecteds));
       dispatch(updateTimes(times));
-      dispatch(updateTestCases(results));
+      // dispatch(updateTestCases(results));
       dispatch(updateErrors(errors));
       dispatch(updateResults(results));
 
@@ -45,6 +48,8 @@ export const localEditorSlice = createSlice({
     logs: [],
     results: [],
     loading: false,
+    testCases: [],
+    problem: null,
     testCases: [],
   },
   reducers: {
@@ -75,6 +80,7 @@ export const localEditorSlice = createSlice({
       state.expecteds = action.payload;
     },
     updateTestCases: (state, action) => {
+      console.log("Updating test cases to: ", action.payload);
       state.testCases = action.payload;
     },
     updateResults: (state, action) => {
@@ -82,6 +88,28 @@ export const localEditorSlice = createSlice({
     },
     updateLoading: (state, action) => {
       state.loading = action.payload;
+    },
+    updateTestCase: (state, action) => {
+      state.testCases[action.payload.index] = action.payload.result;
+      state.results = [];
+      state.expecteds = [];
+      state.logs = [];
+      state.times = [];
+    },
+    addTestCase: (state) => {
+      state.testCases.push(state.testCases[0]);
+    },
+    updateLocalProblem: (state, action) => {
+      console.log("Updating local problem");
+      state.problem = action.payload;
+      console.log(
+        "Updating test cases to: ",
+        JSON.parse(action.payload.inputs)
+      );
+      // individual args must be strings
+      state.testCases = JSON.parse(action.payload.inputs).map((testCase) =>
+        testCase.map((arg) => JSON.stringify(arg))
+      );
     },
   },
 });
@@ -94,7 +122,10 @@ export const {
   updateLogs,
   updateExpecteds,
   updateTimes,
-  updateTestCases,
   updateLoading,
+  updateTestCases,
+  updateTestCase,
+  updateLocalProblem,
+  addTestCase,
 } = localEditorSlice.actions;
 export default localEditorSlice.reducer;

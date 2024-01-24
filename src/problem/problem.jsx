@@ -5,7 +5,7 @@ import Output from "./output";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteProblemAsync, updateCode, updateProblem } from "../editorSlice";
-import { resetLocalEditorSlice } from "./localEditorSlice";
+import { resetLocalEditorSlice, updateLocalProblem } from "./localEditorSlice";
 import { BACKEND_URL } from "../../constants";
 function Problem() {
   const problem = useLoaderData();
@@ -13,7 +13,7 @@ function Problem() {
   const navigate = useNavigate();
   const leftRef = useRef(null);
   const rightRef = useRef(null);
-  const [flexHorizontal, setFlexHorizontal] = useState(1);
+  const [flexHorizontal, setFlexHorizontal] = useState(3);
   const { user } = useSelector((state) => state.auth);
   const isProblemOwner = user?._id === problem?.contributor?._id;
 
@@ -34,6 +34,7 @@ function Problem() {
 
     dispatch(updateProblem(problem));
     dispatch(resetLocalEditorSlice());
+    dispatch(updateLocalProblem(problem));
   }, [problem]);
 
   function deleteProblem() {
