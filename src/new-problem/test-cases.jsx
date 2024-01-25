@@ -166,7 +166,7 @@ export function Case({
           </div>
         ))}
 
-      {recived && (
+      {recived !== undefined && (
         <>
           <div className="text-lg font-semibold">Recived Output:</div>
           <div className={`bg-base-100 p-2 px-4 rounded-lg mb-2`}>
@@ -185,7 +185,7 @@ export function Case({
         </>
       )}
 
-      {time && (
+      {time !== undefined && (
         <>
           <div className="text-lg font-semibold">Runtime:</div>
           <div className="bg-base-100 p-2 px-4 rounded-lg mb-2">
