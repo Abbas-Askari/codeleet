@@ -31,6 +31,7 @@ export const submitCodeAsync = createAsyncThunk(
       console.log({ data });
       dispatch(updateFailed(data.failed));
       dispatch(updateLogs(data.logs));
+      dispatch(setComparision(data.comparision));
     } catch (error) {
       console.log({ error });
       dispatch(updateError(error.message));
@@ -72,12 +73,16 @@ export const editorSlice = createSlice({
     failed: null,
     time: -1,
     logs: [],
-    result: null,
     code: "Hello, this is code by Abbas",
     problem: null,
     loading: false,
+    comparision: null,
   },
   reducers: {
+    setComparision: (state, action) => {
+      console.log({ comparision: action.payload }, "SET COMPARISION");
+      state.comparision = action.payload;
+    },
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
@@ -109,6 +114,7 @@ export const editorSlice = createSlice({
 });
 
 export const {
+  setComparision,
   setLoading,
   updateProblem,
   updateCode,

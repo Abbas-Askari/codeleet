@@ -191,7 +191,7 @@ function Attempts({ problem }) {
             <th>Status</th>
             <th>Runtime</th>
             <th>Date</th>
-            <th>Solution Length</th>
+            <th>Beats</th>
           </tr>
         </thead>
         <tbody>
@@ -215,7 +215,17 @@ function Attempts({ problem }) {
                   .slice(1)
                   .join(" ")}
               </td>
-              <td>{submission.code.length} Characters</td>
+              {submission.status === "Accepted" ? (
+                <td>
+                  {(
+                    (submission.comparision[0].beats * 100) /
+                    submission.comparision[0].total
+                  ).toFixed(1)}
+                  %
+                </td>
+              ) : (
+                <td></td>
+              )}
             </tr>
           ))}
         </tbody>

@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { MAX_LOGS } from "../../constants";
 
 function Result() {
-  const { loading, error, logs, failed, time } = useSelector(
+  const { loading, error, logs, failed, time, comparision } = useSelector(
     (state) => state.editor
   );
   const { problem } = useSelector((state) => state.editor);
@@ -17,8 +17,6 @@ function Result() {
   if (failed) {
     testCase = JSON.parse(failed.testCase);
   }
-
-  console.log({ logs, failed, error, time });
 
   if (loading) {
     return (
@@ -45,7 +43,29 @@ function Result() {
           <div className=" text-success font-bold text-lg my-2">
             All test cases passed!
           </div>
-          <div className="ml-4">Took {time}ms to run all cases.</div>
+          <div className="text-lg font-semibold">Time:</div>
+          <div className="bg-base-300 p-2 px-4 rounded-lg mb-2">
+            <code>{time} ms</code>
+          </div>
+          <div className="text-lg font-semibold">
+            Your submission is better than:
+          </div>
+          <div className="bg-base-300 p-2 px-4 rounded-lg mb-2">
+            <code>
+              {((comparision[0].beats * 100) / comparision[0].total).toFixed(1)}
+              %
+            </code>
+          </div>
+          <div className="text-lg font-semibold">
+            Total Correct Submission for this problem:
+          </div>
+          <div className="bg-base-300 p-2 px-4 rounded-lg mb-2">
+            <code>{comparision[0].total}</code>
+          </div>
+          <div className="text-lg font-semibold">Average time:</div>
+          <div className="bg-base-300 p-2 px-4 rounded-lg mb-2">
+            <code>{comparision[0].time?.toFixed(1)} ms</code>
+          </div>
         </>
       );
     } else {
