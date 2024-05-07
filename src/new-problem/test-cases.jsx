@@ -11,8 +11,6 @@ export function TestCases({}) {
     useSelector((state) => state.newProblem);
   const dispatch = useDispatch();
 
-  console.error({ times });
-
   if (runningTestCases) {
     return (
       <div className="w-full h-full flex items-center justify-center gap-2">

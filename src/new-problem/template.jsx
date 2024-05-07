@@ -40,9 +40,8 @@ function Template() {
         <div className="">
           Template{" "}
           <span
-            className={` mt-2 font-normal self-center text-error text-xs opacity-0 ${
-              validationError ? "opacity-100" : ""
-            } transition-opacity`}
+            className={` mt-2 font-normal self-center text-error text-xs opacity-0 ${validationError ? "opacity-100" : ""
+              } transition-opacity`}
           >
             Template is not valid. {validationError}
           </span>
@@ -57,19 +56,21 @@ function Template() {
         <TemplateHelp />
       </div>
 
-      <ReactCodeMirror
-        value={template}
-        onChange={(value) => {
-          dispatch(updateTemplate(value));
-        }}
-        readOnly={!customTemplate}
-        className={` flex-1 overflow-auto bg-red-300 focus-within:border-info border-2 rounded-lg ${
-          validationError ? "border-error" : ""
-        }`}
-        theme={vscodeDark}
-        height="24rem"
-        extensions={[javascript()]}
-      />
+      <div className="min-h-96 text-lg  rounded-lg overflow-hidden">
+        <ReactCodeMirror
+          value={template}
+          onChange={(value) => {
+            dispatch(updateTemplate(value));
+          }}
+          readOnly={!customTemplate}
+          className={` flex-1 overflow-auto rounded-lg ${validationError ? "border-error" : ""
+            }`}
+          theme={vscodeDark}
+          height="24rem"
+          extensions={[javascript()]}
+        />
+      </div>
+
 
       <div className="join w-full bg-inherit p-0">
         <input

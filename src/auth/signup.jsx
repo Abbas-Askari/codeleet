@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { useDispatch, useSelector } from "react-redux";
-import { loginAsync, signupAsync } from "./auth-slice";
+import { loginAsync, signupAsync, updateError } from "./auth-slice";
 
 function Signup() {
   const [text, setText] = useState("Code Leet");
@@ -23,8 +23,14 @@ function Signup() {
       username: e.target[0].value,
       password: e.target[1].value,
     };
-    console.log({ user });
-    dispatch(signupAsync(user));
+    const confirm = e.target[2].value;
+    if (user.password !== confirm) {
+      // console.log("Passwords do not match");
+      dispatch(updateError("Passwords do not match"));
+      // return;
+    } else {
+      dispatch(signupAsync(user));
+    }
   }
 
   return (
@@ -55,7 +61,7 @@ function Signup() {
         />
         <span>
           Already have an account?
-          <Link to="/login" className=" link link-primary">
+          <Link onClick={() => dispatch(updateError(""))} to="/login" className=" link link-primary">
             {" "}
             Login
           </Link>

@@ -89,7 +89,7 @@ function NewProblem() {
                 <ReactCodeMirror
                   value={code}
                   onChange={(value) => dispatch(updateCode(value))}
-                  className=" flex-1 overflow-auto bg-red-300 focus-within:border-blue-400 border-2 rounded-lg "
+                  className=" flex-1 overflow-auto rounded-lg "
                   theme={vscodeDark}
                   height="24rem"
                   extensions={[javascript()]}

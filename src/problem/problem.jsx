@@ -74,7 +74,7 @@ function Problem() {
           <h3 className=" ">
             Contributed By:{" "}
             <span className=" link-primary link">
-              {problem.contributor?.username}
+              {problem.contributor?.name}
             </span>
             {" | "}
             <span>
@@ -96,7 +96,7 @@ function Problem() {
         ref={rightRef}
         className={` z-20 flex flex-col gap-4  w-[${f * 10}%] min-w-[10%] `}
       >
-        <Editor
+          <Editor
           {...{ problem }}
           className="flex-1 rounded-xl overflow-hidden "
         />

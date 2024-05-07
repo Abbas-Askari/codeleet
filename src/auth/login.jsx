@@ -48,7 +48,7 @@ function Login() {
         />
         <span>
           Don't have an account?
-          <Link to="/signup" className=" link link-primary">
+          <Link onClick={() => dispatch(updateError(""))} to="/signup" className=" link link-primary">
             {" "}
             Sign Up
           </Link>
